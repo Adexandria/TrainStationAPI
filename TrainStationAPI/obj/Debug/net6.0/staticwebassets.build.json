@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "UcnKY8qbM0vnBYG1z2frR+Sw4BDRZQjpxzdoQxukEuA=",
+  "Source": "TrainStationAPI",
+  "BasePath": "_content/TrainStationAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
