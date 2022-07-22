@@ -27,17 +27,17 @@ namespace TrainStationAPI.Controllers
                 return NotFound();
             }
             TrainInfo trainInfo = newTrainInfo.Adapt<TrainInfo>();
-            trainInfo.Train.Adapt(train);
+            trainInfo.Train = train;
             await _trainInfoDb.Add(trainInfo);
             return Ok("Added successfully");
         }
         
-        [HttpPut("{infoId}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateExistingTrainInformation(Guid trainId, Guid infoId, [FromBody] TrainInfoUpdate newTrainInfo)
         {
             Train train = await _trainDb.Get(trainId);
             
-            bool currentTrainInfo = await _trainInfoDb.IsExist(infoId);
+            bool currentTrainInfo =  _trainInfoDb.IsExist(infoId);
             
             if (train is null || !currentTrainInfo)
             {
@@ -45,19 +45,19 @@ namespace TrainStationAPI.Controllers
             }
             
             TrainInfo trainInfo = newTrainInfo.Adapt<TrainInfo>();
-            trainInfo.Train.Adapt(train);
-            trainInfo.InfoId.Adapt(infoId);
+            trainInfo.Train = train;
+            trainInfo.InfoId = infoId;
             
             await _trainInfoDb.Update(trainInfo);
             return Ok("Updated successfully");
         }
 
-        [HttpDelete("{infoId}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteTrainInformation(Guid trainId, Guid infoId)
         {
             Train train = await _trainDb.Get(trainId);
 
-            bool currentTrainInfo = await _trainInfoDb.IsExist(infoId);
+            bool currentTrainInfo =  _trainInfoDb.IsExist(infoId);
 
             if (train is null || !currentTrainInfo)
             {

@@ -7,5 +7,6 @@ namespace TrainStationAPI.Model.DTO.Train
     {
         public virtual Guid TrainId { get; set; }
         public virtual string Name { get; set; }
+        public TrainInfoDTO TrainInformation { get; set; }
     }
 }

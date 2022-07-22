@@ -12,9 +12,9 @@ namespace TrainStationAPI.Services
             _db = db;
         }
 
-        public async Task<bool> IsExist(Guid id)
+        public bool IsExist(Guid id)
         {
-            TrainInfo trainInfo = await _db.session.GetAsync<TrainInfo>(id);
+            TrainInfo trainInfo =  _db.session.Query<TrainInfo>().FirstOrDefault(s=>s.Train.TrainId == id);
             if(trainInfo is null)
             {
                 return false;
@@ -32,7 +32,7 @@ namespace TrainStationAPI.Services
         public async Task Remove(Guid id)
         {
             ITransaction transaction = OpenTransaction();
-            TrainInfo item = _db.session.Get<TrainInfo>(id);
+            TrainInfo item = _db.session.Query<TrainInfo>().FirstOrDefault(s=>s.Train.TrainId == id);
             await _db.session.DeleteAsync(item);
             await transaction.CommitAsync();
         }
@@ -49,6 +49,10 @@ namespace TrainStationAPI.Services
             return _db.session.BeginTransaction();
         }
 
-       
+        public TrainInfo GetTrainInfoByTrainId(Guid trainId)
+        {
+            TrainInfo trainInfo = _db.session.Query<TrainInfo>().Where(s => s.Train.TrainId == trainId).FirstOrDefault();
+            return trainInfo;
+        }
     }
 }

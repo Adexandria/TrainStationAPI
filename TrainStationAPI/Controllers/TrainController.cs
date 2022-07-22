@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TrainStationAPI.Model;
 using TrainStationAPI.Model.DTO.Train;
+using TrainStationAPI.Model.DTO.TrainInfo;
 using TrainStationAPI.Services;
 
 namespace TrainStationAPI.Controllers
@@ -11,16 +12,18 @@ namespace TrainStationAPI.Controllers
     public class TrainController : ControllerBase
     {
         private readonly ITrainStation<Train> _trainDb;
-        public TrainController(ITrainStation<Train> trainDb)
+        private readonly ITrainInfo _trainInfoDb;
+        public TrainController(ITrainStation<Train> trainDb, ITrainInfo trainInfoDb)
         {
             _trainDb = trainDb;
+            _trainInfoDb = trainInfoDb;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TrainDTO>> GetAllTrains()
+        public ActionResult<IEnumerable<TrainsDTO>> GetAllTrains()
         {
             IEnumerable<Train> trains = _trainDb.GetAll();
-            IEnumerable<TrainDTO> mappedTrains = trains.Adapt<IEnumerable<TrainDTO>>();
+            IEnumerable<TrainsDTO> mappedTrains = trains.Adapt<IEnumerable<TrainsDTO>>();
             return Ok(mappedTrains);
         }
 
@@ -28,11 +31,14 @@ namespace TrainStationAPI.Controllers
         public async Task<ActionResult<TrainDTO>> GetTrain(Guid trainId)
         {
             Train train = await _trainDb.Get(trainId);
+            TrainInfo trainInfo = _trainInfoDb.GetTrainInfoByTrainId(trainId);
             if(train is null)
             {
                 return NotFound();
             }
             TrainDTO mappedTrain = train.Adapt<TrainDTO>();
+            TrainInfoDTO mappedInfo = trainInfo.Adapt<TrainInfoDTO>();
+            mappedTrain.TrainInformation = mappedInfo;
             return Ok(mappedTrain);
         }
 
@@ -53,7 +59,7 @@ namespace TrainStationAPI.Controllers
                 return NotFound();
             }
             Train train = trainUpdate.Adapt<Train>();
-            train.TrainId.Adapt(trainId);
+            train.TrainId = trainId;
             await _trainDb.Update(train);
             return Ok("Updated Successfully");
         }

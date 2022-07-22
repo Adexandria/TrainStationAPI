@@ -48,6 +48,26 @@
               "target": "Package",
               "version": "[7.3.0, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.7, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
+              "target": "Package",
+              "version": "[6.0.7, )"
+            },
+            "NHibernate.AspNetCore.Identity": {
+              "target": "Package",
+              "version": "[6.0.8, )"
+            },
+            "NHibernate.NetCore": {
+              "target": "Package",
+              "version": "[6.0.9, )"
+            },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[108.0.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"

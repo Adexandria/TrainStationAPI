@@ -3,6 +3,8 @@ using TrainStationAPI.Services;
 using TrainStationAPI.Model;
 using TrainStationAPI.Model.DTO.Connection;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace TrainStationAPI.Controllers
 {
@@ -19,7 +21,8 @@ namespace TrainStationAPI.Controllers
             _stationDb = stationDb;
             _trainDb = trainDb;
         }
-
+        
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
         public ActionResult<IEnumerable<ConnectionDTO>> GetAllConnections()
         {
@@ -51,9 +54,9 @@ namespace TrainStationAPI.Controllers
 
             Connection connection = newConnection.Adapt<Connection>();
             
-            connection.Train.Adapt(currentTrain);
-            connection.CurrentStation.Adapt(currentStation);
-            connection.NextStation.Adapt(nextStation);
+            connection.Train = currentTrain;
+            connection.CurrentStation = currentStation;
+            connection.NextStation = nextStation;
             
             await _connectionDb.Add(connection);
             return Ok("Added Successfully");

@@ -4,7 +4,8 @@ namespace TrainStationAPI.Services
 {
     public interface ITrainInfo
     {
-        Task<bool> IsExist(Guid id);
+        bool IsExist(Guid id);
+        TrainInfo GetTrainInfoByTrainId(Guid trainId);
         Task Add(TrainInfo item);
         Task Remove(Guid id);
         Task Update(TrainInfo item);
